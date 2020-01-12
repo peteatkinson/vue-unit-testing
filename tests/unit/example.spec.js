@@ -1,12 +1,47 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
-
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
-    })
-    expect(wrapper.text()).toMatch(msg)
-  })
+import Todos from '@/components/Todos.vue'
+import Vuex from 'vuex';
+import { shallow, mount } from 'vue-test-utils';
+import { Store } from 'vuex-mock-store'
+const store = new Store({
+  state: { 
+    todos: [
+      { 
+        id: 2,
+        title: "Todo One"
+      },
+      {
+        id: 3,
+        title: "Todo Two"
+      }
+    ]
+  },
+  getters: {
+     allTodos: [
+      { 
+        id: 2,
+        title: "Todo One"
+      },
+      { 
+        id: 3,
+        title: "Todo Two"
+      }
+     ] 
+  },
 })
+
+const mocks = {
+  $store: store,
+}
+
+
+describe('Todos.vue', () => {
+      let wrapper;
+
+      beforeEach(() => {
+        wrapper = mount(Todos, {mocks})
+      })
+      test('renders props.msg when passed', () => {
+           expect(wrapper.findAll(".todo").length).toBe(2);
+        })
+      })
